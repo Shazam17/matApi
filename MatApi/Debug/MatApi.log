@@ -1,0 +1,4 @@
+﻿  pch.cpp
+  MatApi.cpp
+c:\users\админ\source\repos\matapi\matapi\matapi.cpp(95): warning C4715: det<int>: значение возвращается не при всех путях выполнения
+  MatApi.vcxproj -> C:\Users\админ\source\repos\MatApi\Debug\MatApi.exe
