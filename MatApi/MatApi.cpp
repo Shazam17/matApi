@@ -1,12 +1,12 @@
-﻿﻿/*
+﻿#include "pch.h"
+#include <iostream>
+/*
 8
 Напишите программу, которая решает систему трех линейных уравнений с тремя
 неизвестными матричным методом.
 */
-#include "pch.h"
-#include <iostream>
-
 #define Log(x) std::cout << x << std::endl
+#define LogLine(x) std::cout << __LINE__ << ' ' << x << std::endl
 
 template<typename T>
 class mat {
@@ -49,9 +49,6 @@ public:
 		return arr[i];
 	}
 
-
-
-
 	void realoc(int row, int col) {
 		~mat();
 		this->arr = new T *[row];
@@ -65,6 +62,7 @@ public:
 	}
 
 	~mat() {
+		LogLine("Destructor called");
 		for (int i = 0; i < sI; i++) {
 			delete[] this->arr[i];
 		}
@@ -112,7 +110,6 @@ T getMinor(mat<T> & mt, int row, int col) {
 				}
 			}
 		}
-		res.show();
 		return det(res);
 	}
 	return NULL;
@@ -120,8 +117,34 @@ T getMinor(mat<T> & mt, int row, int col) {
 
 
 template<typename T>
-mat<T> matRev(mat<T> mt) {
-	mat<T> ret;
+void matRev(mat<T> & mt) {
+	if (mt.getI() != mt.getJ()) {
+		return;
+	}
+	mat<T> ret(mt.getI(), mt.getI());
+	T d = det(mt);
+	if(d == 0) {
+		return;
+	}
+	for (int i = 0; i < mt.getI(); i++) {
+		for (int j = 0; j < mt.getI(); j++) {
+			int c;
+			if (((i + 1) + (j + 1)) % 2) {
+				c = -1;
+			}
+			else {
+				c = 1;
+			}
+			ret[i][j] = c * (getMinor(mt , i , j) / d);
+		}
+	}
+	for (int i = 0; i < mt.getI(); i++) {
+		for (int j = 0; j < mt.getI(); j++) {
+			mt[i][j] = ret[i][j];
+		}
+	}
+	ret.show();
+
 }
 
 template<typename T>
@@ -147,12 +170,31 @@ void transpose(mat<T> &mt) {
 	}
 
 }
+template<typename T>
+mat<T> mult(mat<T> a, mat<T> b) {
+	if (a.getI() == b.getI() && a.getJ() == b.getI()) {
+		mat<T>(a.getI(), b.getJ());
+		for (int i = 0; i < a.getI(); i++) {
+			for (int j = 0; j < b.getJ(); i++) {
+
+			}
+		}
+	}
+}
+
+template<typename T>
+mat<T> multOptim(mat<T> a, mat<T> b) {
+	if (a.getI() == b.getI() && a.getJ() == b.getI()) {
+		mat<T>(a.getI(), b.getJ());
+		
+	}
+}
 
 int main() {
 	mat<int> mt(3, 3);
+	matRev(mt);
 
-	std::cout << det(mt) << std::endl;
-
+	mt.show();
 
 	return 0;
 }
