@@ -10,11 +10,15 @@
 
 template<typename T>
 class mat {
-private:
+public:
 	T ** arr;
 	int sI;
 	int sJ;
-public:
+
+	mat() {
+
+	}
+
 	mat(int I, int J) : sI(I), sJ(J) {
 		this->arr = new T *[I];
 		for (int i = 0; i < I; i++) {
@@ -30,6 +34,32 @@ public:
 				}
 			}
 		}
+	}
+	mat(int I) : sI(I), sJ(I) {
+		this->arr = new T *[I];
+		for (int i = 0; i < I; i++) {
+			this->arr[i] = new T[I];
+		}
+		for (int i = 0; i < sI; i++) {
+			for (int j = 0; j < sJ; j++) {
+				if (i == j) {
+					arr[i][j] = 1;
+				}
+				else {
+					arr[i][j] = 0;
+				}
+			}
+		}
+	}
+
+	mat operator= (mat &mt) {
+		mat ret(mt.getI(), mt.getJ());
+		for (int i = 0; i < mt.getI(); i++) {
+			for (int j = 0; j < mt.getJ(); j++) {
+				ret[i][j] = mt[i][j];
+			}
+		}
+		return ret;
 	}
 
 	int getI() const { return this->sI; }
@@ -56,20 +86,36 @@ public:
 			arr[i] = new T[col];
 		}
 	}
-
-	T get(int i, int j) {
-		return arr[i][j];
-	}
-
 	~mat() {
 		LogLine("Destructor called");
 		for (int i = 0; i < sI; i++) {
 			delete[] this->arr[i];
 		}
-		delete[] this->arr;
+		delete[] this->arr;	
 	}
 };
 
+template<typename T>
+class vec : mat<T> {
+
+public:
+	vec(int size) {
+		//this->arr = mat<T>(size, 1);
+		this->sI = size;
+		this->sJ = 1;
+	}
+	vec(const T * a , int n) {
+		this->arr = new T *[1];
+		this->arr[0] = new T[n];
+
+		for (int i = 0; i < n; i++) {
+			this->arr[0][i] = a[i];
+		}
+		this->sI = 1;
+		this->sJ = n;
+	}
+
+};
 
 template<typename T>
 T det(mat<T> &mt) {
@@ -143,8 +189,6 @@ void matRev(mat<T> & mt) {
 			mt[i][j] = ret[i][j];
 		}
 	}
-	ret.show();
-
 }
 
 template<typename T>
@@ -166,20 +210,22 @@ void transpose(mat<T> &mt) {
 				}
 			}
 		}
-
 	}
-
 }
 template<typename T>
-mat<T> mult(mat<T> a, mat<T> b) {
-	if (a.getI() == b.getI() && a.getJ() == b.getI()) {
-		mat<T>(a.getI(), b.getJ());
-		for (int i = 0; i < a.getI(); i++) {
-			for (int j = 0; j < b.getJ(); i++) {
-
+void mult(mat<T> *a, mat<T>* b , mat<T>* res) {
+	if (a->getI() == b->getI() && a->getJ() == b->getI()) {
+		for (int i = 0; i < a->getI(); i++) {
+			for (int j = 0; j < b->getJ(); j++) {
+				T elem = 0;
+				for (int c = 0; c < a.getJ(); c++) {
+					elem += a[i][c] * b[c][j];
+				}
+				res[i][j] = elem;
 			}
 		}
 	}
+	
 }
 
 template<typename T>
@@ -193,8 +239,8 @@ mat<T> multOptim(mat<T> a, mat<T> b) {
 int main() {
 	mat<int> mt(3, 3);
 	matRev(mt);
+	mat<int> res(3);
+	mult(&mt, &mt, &res);
+	res.show();
 
-	mt.show();
-
-	return 0;
 }

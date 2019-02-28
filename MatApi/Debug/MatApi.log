@@ -1,3 +1,2 @@
 ﻿  MatApi.cpp
-c:\users\админ\source\repos\matapi\matapi\matapi.cpp(93): warning C4715: det<int>: значение возвращается не при всех путях выполнения
-  MatApi.vcxproj -> C:\Users\админ\source\repos\MatApi\Debug\MatApi.exe
+c:\users\stkau\desktop\dz\matapi\matapi.cpp(256): error C2243: 'type cast': conversion from 'vec<int> *' to 'mat<int> *' exists, but is inaccessible

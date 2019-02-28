@@ -1,0 +1,4 @@
+﻿  pch.cpp
+  MatApi.cpp
+c:\users\stkau\desktop\dz\matapi\matapi.cpp(93): warning C4715: 'det<int>': not all control paths return a value
+  MatApi.vcxproj -> C:\Users\stkau\Desktop\dz\x64\Debug\MatApi.exe
